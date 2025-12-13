@@ -73,5 +73,5 @@ out
 # temp data
 __data
 
-public/upload
+# public/upload
 types/env.d.ts
