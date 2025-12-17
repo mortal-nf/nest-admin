@@ -8,10 +8,13 @@ import { ThrottlerGuard } from '@nestjs/throttler'
 import { ClsModule } from 'nestjs-cls'
 
 import config from '~/config'
+import { ProjectsModule } from '~/modules/projects/projects.module'
+
+import { RequirementPoolModule } from '~/modules/requirement-pool/requirement-pool.module'
+
+import { ServiceObjectModule } from '~/modules/service-object/service-object.module'
 import { SharedModule } from '~/shared/shared.module'
-
 import { AllExceptionsFilter } from './common/filters/any-exception.filter'
-
 import { IdempotenceInterceptor } from './common/interceptors/idempotence.interceptor'
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
@@ -23,10 +26,10 @@ import { NetdiskModule } from './modules/netdisk/netdisk.module'
 import { SseModule } from './modules/sse/sse.module'
 import { SystemModule } from './modules/system/system.module'
 import { TasksModule } from './modules/tasks/tasks.module'
+
 import { TodoModule } from './modules/todo/todo.module'
 import { ToolsModule } from './modules/tools/tools.module'
 import { DatabaseModule } from './shared/database/database.module'
-
 import { SocketModule } from './socket/socket.module'
 
 @Module({
@@ -64,12 +67,13 @@ import { SocketModule } from './socket/socket.module'
     HealthModule,
     SseModule,
     NetdiskModule,
-
-    // biz
-
-    // end biz
-
     TodoModule,
+    // 项目管理模块
+    ProjectsModule,
+    // 需求池模块
+    RequirementPoolModule,
+    // 服务对象模块
+    ServiceObjectModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
@@ -85,4 +89,5 @@ import { SocketModule } from './socket/socket.module'
 
   ],
 })
-export class AppModule {}
+export class AppModule {
+}

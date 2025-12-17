@@ -169,6 +169,9 @@ pnpm migration:revert
 > [!TIP]
 > 如果你的`实体类`或`数据库配置`有更新，请执行`npm run build`后再进行数据库迁移相关操作。
 
+## TODO
+  - [ ] 添加项目管理
+
 ## 系统截图
 
 ![](https://s1.ax1x.com/2021/12/11/oTi1nf.png)
