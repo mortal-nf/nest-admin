@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsEnum, IsISO8601, IsNumber, IsOptional, IsString, Min } from 'class-validator'
+import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator'
 
 export class CreateProjectDto {
   @ApiProperty({ description: '项目名称', example: '电商平台开发' })
@@ -21,12 +21,10 @@ export class CreateProjectDto {
   status?: string
 
   @ApiPropertyOptional({ description: '项目开始日期', example: '2023-01-01' })
-  @IsISO8601()
   @IsOptional()
   startDate?: Date
 
   @ApiPropertyOptional({ description: '项目结束日期', example: '2023-12-31' })
-  @IsISO8601()
   @IsOptional()
   endDate?: Date
 

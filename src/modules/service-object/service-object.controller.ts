@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
 import { CreateServiceObjectDto } from './dto/create-service-object.dto'
 import { ServiceObjectQueryDto } from './dto/service-object-query.dto'
@@ -10,6 +11,7 @@ import { ServiceObjectService } from './service-object.service'
 
 @ApiTags('服务对象管理模块')
 @Controller('service-objects')
+@ApiSecurityAuth()
 export class ServiceObjectController {
   constructor(private readonly serviceObjectService: ServiceObjectService) {
   }

@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
 import { CreateRequirementPoolDto } from './dto/create-requirement-pool.dto'
 import { RequirementPoolQueryDto } from './dto/requirement-pool-query.dto'
@@ -10,6 +11,7 @@ import { RequirementPoolService } from './requirement-pool.service'
 
 @ApiTags('需求池管理模块')
 @Controller('requirement-pools')
+@ApiSecurityAuth()
 export class RequirementPoolController {
   constructor(private readonly requirementPoolService: RequirementPoolService) {
   }
