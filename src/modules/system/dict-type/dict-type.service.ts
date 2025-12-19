@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-
 import { Like, Repository } from 'typeorm'
-
 import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
+import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
 import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
 
 import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
+import { DictTypeResponseVo } from './vo/dict-type-response.vo'
 
 @Injectable()
 export class DictTypeService {
@@ -71,5 +71,28 @@ export class DictTypeService {
    */
   async findOne(id: number): Promise<DictTypeEntity> {
     return this.dictTypeRepository.findOneBy({ id })
+  }
+
+  /**
+   * 获取指定字典code 的所有字典项
+   */
+  async getItems(code: string): Promise<DictTypeResponseVo> {
+    /** 校验字典code 是否存在 */
+    const dictType = await this.dictTypeRepository.findOneBy({ code })
+    if (!dictType) {
+      throw new NotFoundException(`字典类型 ${code} 不存在`)
+    }
+    // 获取其所有子项
+    const dictItemRepository = this.dictTypeRepository.manager.getRepository(DictItemEntity)
+    const dictItems = await dictItemRepository.find({
+      where: { type: { id: dictType.id } },
+      order: { orderNo: 'ASC' },
+      relations: ['type'],
+    })
+    // 构建响应VO
+    const responseVo = new DictTypeResponseVo()
+    Object.assign(responseVo, dictType)
+    responseVo.children = dictItems
+    return responseVo
   }
 }

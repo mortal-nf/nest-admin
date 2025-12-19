@@ -9,9 +9,10 @@ import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { Pagination } from '~/helper/paginate/pagination'
 import { definePermission, Perm } from '~/modules/auth/decorators/permission.decorator'
 import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
-
 import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
+
 import { DictTypeService } from './dict-type.service'
+import { DictTypeResponseVo } from './vo/dict-type-response.vo'
 
 export const permissions = definePermission('system:dict-type', {
   LIST: 'list',
@@ -25,7 +26,7 @@ export const permissions = definePermission('system:dict-type', {
 @ApiSecurityAuth()
 @Controller('dict-type')
 export class DictTypeController {
-  constructor(private dictTypeService: DictTypeService) {}
+  constructor(private dictTypeService: DictTypeService) { }
 
   @Get()
   @ApiOperation({ summary: '获取字典类型列表' })
@@ -70,5 +71,14 @@ export class DictTypeController {
   @Perm(permissions.DELETE)
   async delete(@IdParam() id: number): Promise<void> {
     await this.dictTypeService.delete(id)
+  }
+
+  // 获取指定字典code 的所有字典项
+  @Get('items/:code')
+  @ApiOperation({ summary: '获取指定字典code 的所有字典项' })
+  @ApiResult({ type: DictTypeResponseVo })
+  @Perm(permissions.READ)
+  async getItems(@Query('code') code: string): Promise<DictTypeResponseVo> {
+    return this.dictTypeService.getItems(code)
   }
 }
