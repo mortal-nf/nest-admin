@@ -12,7 +12,7 @@ import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
 import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
 
 import { DictTypeService } from './dict-type.service'
-import { DictTypeResponseVo } from './vo/dict-type-response.vo'
+import { DictTypeResponseVo, LabelValueOptions } from './vo/dict-type-response.vo'
 
 export const permissions = definePermission('system:dict-type', {
   LIST: 'list',
@@ -80,5 +80,14 @@ export class DictTypeController {
   @Perm(permissions.READ)
   async getItems(@Query('code') code: string): Promise<DictTypeResponseVo> {
     return this.dictTypeService.getItems(code)
+  }
+
+  // 获取指定字典code 的所有字典项
+  @Get('data')
+  @ApiOperation({ summary: '获取指定字典code 的所有字典项' })
+  @ApiResult({ type: [LabelValueOptions] })
+  @Perm(permissions.READ)
+  async getItemList(@Query('type') type: string): Promise<LabelValueOptions[]> {
+    return this.dictTypeService.getItemList(type)
   }
 }

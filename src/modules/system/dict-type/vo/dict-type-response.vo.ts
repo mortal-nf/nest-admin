@@ -5,3 +5,8 @@ import { DictTypeEntity } from '../dict-type.entity'
 export class DictTypeResponseVo extends DictTypeEntity {
   children: DictItemEntity[]
 }
+
+export class LabelValueOptions {
+  label: string
+  value: any
+}

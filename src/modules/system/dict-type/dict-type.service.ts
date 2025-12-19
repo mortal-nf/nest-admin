@@ -7,14 +7,14 @@ import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
 import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
 
 import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
-import { DictTypeResponseVo } from './vo/dict-type-response.vo'
+import { DictTypeResponseVo, LabelValueOptions } from './vo/dict-type-response.vo'
 
 @Injectable()
 export class DictTypeService {
   constructor(
     @InjectRepository(DictTypeEntity)
     private dictTypeRepository: Repository<DictTypeEntity>,
-  ) {}
+  ) { }
 
   /**
    * 罗列所有配置
@@ -71,6 +71,26 @@ export class DictTypeService {
    */
   async findOne(id: number): Promise<DictTypeEntity> {
     return this.dictTypeRepository.findOneBy({ id })
+  }
+
+  async getItemList(code: string): Promise<LabelValueOptions[]> {
+    /** 校验字典code 是否存在 */
+    const dictType = await this.dictTypeRepository.findOneBy({ code })
+    if (!dictType) {
+      throw new NotFoundException(`字典类型 ${code} 不存在`)
+    }
+    // 获取其所有子项
+    const dictItemRepository = this.dictTypeRepository.manager.getRepository(DictItemEntity)
+    const dictItems = await dictItemRepository.find({
+      where: { type: { id: dictType.id } },
+      order: { orderNo: 'ASC' },
+      relations: ['type'],
+    })
+    // 转换为 LabelValueOptions 格式
+    return dictItems.map(item => ({
+      label: item.label,
+      value: item.value,
+    }))
   }
 
   /**
