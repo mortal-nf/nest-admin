@@ -13,6 +13,6 @@ export class ServiceObject extends CompleteEntity {
   description: string
 
   @ApiProperty({ description: '是否启用' })
-  @Column({ type: 'boolean', default: true, comment: '是否启用' })
-  enabled: boolean
+  @Column({ type: 'string', default: '1', comment: '是否启用，0禁用，1启用' })
+  enabled: string
 }

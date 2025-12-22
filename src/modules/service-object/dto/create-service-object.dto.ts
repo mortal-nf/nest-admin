@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsBoolean, IsOptional, IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class CreateServiceObjectDto {
   @ApiProperty({ description: '服务对象名称', example: '内部团队' })
@@ -11,8 +11,7 @@ export class CreateServiceObjectDto {
   @IsOptional()
   description?: string
 
-  @ApiProperty({ description: '是否启用', example: true })
-  @IsBoolean()
+  @ApiProperty({ description: '是否启用', example: '1' })
   @IsOptional()
-  enabled?: boolean = true
+  enabled?: string = '1'
 }
