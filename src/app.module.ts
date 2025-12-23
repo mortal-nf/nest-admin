@@ -12,7 +12,10 @@ import { ProjectsModule } from '~/modules/projects/projects.module'
 
 import { RequirementPoolModule } from '~/modules/requirement-pool/requirement-pool.module'
 
+import { RequirementsModule } from '~/modules/requirements/requirements.module'
 import { ServiceObjectModule } from '~/modules/service-object/service-object.module'
+
+import { TaskNodesModule } from '~/modules/task-nodes/task-nodes.module'
 import { SharedModule } from '~/shared/shared.module'
 import { AllExceptionsFilter } from './common/filters/any-exception.filter'
 import { IdempotenceInterceptor } from './common/interceptors/idempotence.interceptor'
@@ -72,8 +75,12 @@ import { SocketModule } from './socket/socket.module'
     ProjectsModule,
     // 需求池模块
     RequirementPoolModule,
+    // 需求模块
+    RequirementsModule,
     // 服务对象模块
     ServiceObjectModule,
+    // 任务节点模块
+    TaskNodesModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

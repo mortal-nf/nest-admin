@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { CompleteEntity } from '~/common/entity/common.entity'
+import { Project } from '~/modules/projects/entities/projects.entity'
 
 @Entity('service_objects')
 export class ServiceObject extends CompleteEntity {
@@ -13,6 +14,10 @@ export class ServiceObject extends CompleteEntity {
   description: string
 
   @ApiProperty({ description: '是否启用' })
-  @Column({ type: 'string', default: '1', comment: '是否启用,0禁用,1启用' })
+  @Column({ type: 'varchar', length: 1, default: '1', comment: '是否启用,0禁用,1启用' })
   enabled: string
+
+  // service-object.entity.ts 添加
+  @OneToMany(() => Project, project => project.serviceObject)
+  projects: Project[]
 }

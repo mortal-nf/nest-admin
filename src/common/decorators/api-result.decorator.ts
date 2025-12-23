@@ -65,8 +65,14 @@ export function ApiResult<TModel extends Type<any>>({
 
   const model = Array.isArray(type) ? type[0] : type
 
-  return applyDecorators(
-    ApiExtraModels(model),
+  const decorators = []
+
+  // 只有当model存在时才添加ApiExtraModels
+  if (model) {
+    decorators.push(ApiExtraModels(model))
+  }
+
+  decorators.push(
     (
       target: object,
       key: string | symbol,
@@ -91,4 +97,6 @@ export function ApiResult<TModel extends Type<any>>({
       })
     },
   )
+
+  return applyDecorators(...decorators)
 }

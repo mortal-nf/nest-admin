@@ -83,4 +83,13 @@ export class ProjectsService {
     const project = await this.findOne(id)
     await this.projectRepository.remove(project)
   }
+
+  /**
+   * 更新项目进度
+   */
+  async updateProgress(id: number, progress: number): Promise<Project> {
+    const project = await this.findOne(id)
+    project.progress = Math.max(0, Math.min(100, progress)) // 确保进度在0-100之间
+    return this.projectRepository.save(project)
+  }
 }

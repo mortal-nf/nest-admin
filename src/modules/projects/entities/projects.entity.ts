@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { CompleteEntity } from '~/common/entity/common.entity'
 import { RequirementPool } from '~/modules/requirement-pool/entities/requirement-pool.entity'
+import { Requirement } from '~/modules/requirements/entities/requirement.entity'
 import { ServiceObject } from '~/modules/service-object/entities/service-object.entity'
+import { TaskNode } from '~/modules/task-nodes/entities/task-node.entity'
 
 @Entity('projects')
 export class Project extends CompleteEntity {
@@ -51,4 +53,16 @@ export class Project extends CompleteEntity {
   @ManyToOne(() => RequirementPool, { nullable: true })
   @JoinColumn({ name: 'requirement_pool_id' })
   requirementPool: RequirementPool
+
+  @ApiProperty({ description: '项目进度百分比', example: 50, required: false })
+  @Column({ type: 'int', default: 0, comment: '项目进度百分比(0-100)' })
+  progress: number
+
+  // 建立与需求的一对多关系
+  @OneToMany(() => Requirement, requirement => requirement.project)
+  requirements: Requirement[]
+
+  // 建立与任务节点的一对多关系
+  @OneToMany(() => TaskNode, taskNode => taskNode.project, { cascade: ['insert', 'update'] })
+  taskNodes: TaskNode[]
 }

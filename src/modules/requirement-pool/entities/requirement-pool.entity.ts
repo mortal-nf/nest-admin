@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { CompleteEntity } from '~/common/entity/common.entity'
+import { Requirement } from '~/modules/requirements/entities/requirement.entity'
 import { ServiceObject } from '~/modules/service-object/entities/service-object.entity'
 
 @Entity('requirement_pools')
@@ -24,4 +25,8 @@ export class RequirementPool extends CompleteEntity {
     referencedColumnName: 'id', // 关联表(ServiceObject)的主键列名
   })
   serviceObject: ServiceObject
+
+  // 与 Requirement 建立一对多关系
+  @OneToMany(() => Requirement, requirement => requirement.requirementPool)
+  requirements: Requirement[]
 }
